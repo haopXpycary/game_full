@@ -107,8 +107,8 @@ class AFire(threading.Thread):
 
 class Adder:
     def __init__(self,kind):
-        self.adderX    = random.randint(1,MaxScrX)
-        self.adderY    = random.randint(1,MaxScrX)
+        self.adderX    = random.randint(1,MaxScrX-1)
+        self.adderY    = random.randint(1,MaxScrY-1)
         self.kind = kind
 
 class scrControl:

@@ -5,7 +5,8 @@ import tty
 
 from player import *
 from Const_H__ import *
-
+from myDict import *
+	
 #立即响应
 fd = sys.stdin.fileno()
 old_settings = termios.tcgetattr(fd)
@@ -35,4 +36,8 @@ for i in range(MaxExpAdder):
     adderL.append(Adder(expAdder))
 
 fireL = []
-alldict = dict()
+alldict = dict() 
+pdict   = list() #player
+fdict   = list() #fire
+hdict   = list() #healthAdder
+edict   = list() #expAdder
