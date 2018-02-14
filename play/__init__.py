@@ -1,37 +1,14 @@
-import sys
-import os
-import termios
-import tty
 import time
 
+from before import *
 from player import *
 from Const_H__ import *
-#print(input())
 
-#立即响应
-fd = sys.stdin.fileno()
-old_settings = termios.tcgetattr(fd)
-tty.setraw(sys.stdin.fileno(), termios.TCSANOW)
-getch = sys.stdin.read
-
-#隐藏光标
-print("\033[?25l",end="")
-
-
-per = player(0,0)
-adderL  = []
-for i in range(MaxHealthAdder):
-    adderL.append(Adder(healthAdder))
-for i in range(MaxExpAdder):
-    adderL.append(Adder(expAdder))
-scr = scrControl()
-scr.show()
-perch = "->"
-
+sumL = 1
+color = WHITE
 while True:
-    #time.sleep(0.02)
-    ch = getch(1)
-    print("\b"*MaxScrX,end="")
+    ch = get.ch
+    get.ch = 0
     
     if ch == UP:
         per.walk(Up)
@@ -41,14 +18,60 @@ while True:
         per.walk(Right)
     elif ch == RIGHT:
         per.walk(Left)
+    elif ch == FIRE:
+        fireL.append(AFire(per.playerX,per.playerY,per.headfor))
+        fireL[-1].start()
+        time.sleep(0.1)
+        #fireL[-1].join()
+        
+    for i in adderL:
+        if i.kind == healthAdder:
+            alldict[(i.adderX,i.adderY)] = "+"
+        if i.kind == expAdder:
+            alldict[(i.adderX,i.adderY)] = "*"
     
     if per.headfor == Right:
-        perch = "->"
+        perch = ">"
     elif per.headfor == Left:
-        perch = "<-"
-        
-    scr.update(per.playerX,per.playerY,perch)
+        perch = "<"
+    elif per.headfor == Up:
+        perch = "^"
+    elif per.headfor == Down:
+        perch = "v"
+    alldict[(per.playerX,per.playerY)] = "p"+perch
+    
+    for i in fireL:
+        if i.hitWall or i.stop:
+            del i
+            continue
+        if i.headfor == Right:
+            firech = ">"
+        elif i.headfor == Left:
+            firech = "<"
+        elif i.headfor == Up:
+            firech = "^"
+        elif i.headfor == Down:
+            firech = "v"
+        alldict[(i.fireX,i.fireY)] = firech
+    
+    sumL+=1
+    if sumL % 12 == 0:
+        fireL.append(AFire(random.randint(1,MaxScrX),
+        	                  random.randint(1,MaxScrY),
+        	                  random.randint(1,4)))
+        fireL[-1].start()
+    
+    
+    for i,j in zip(alldict.keys(),alldict.values()):
+        if j[0] == "p":
+            scr.update(i[0],i[1],j[1:],RED)
+            continue
+        scr.update(i[0],i[1],j)
     scr.updateShow()
-    scr.update(per.playerX,per.playerY,"  ")
-
+    for i,j in zip(alldict.keys(),alldict.values()):
+        scr.update(i[0],i[1]," "*len(j))
+    alldict.clear()
+    print("\033[15;5H","level:{} HP:{} exp:{}".format(per.level,per.health,per.exp))
+    time.sleep(0.02)
+    
 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)

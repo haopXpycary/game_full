@@ -77,13 +77,14 @@ class AFire(threading.Thread):
         self.fireY   = y
         self.headfor = headfor
         self.hitWall = False
+        self.stop    = False
         
     def run(self):
         headfor = self.headfor
-        while not self.hitWall:
+        while not self.hitWall and not self.stop:
             if headfor == Right:
                 if self.fireX < MaxScrX:
-                    self.firerX += 1
+                    self.fireX += 1
                 else:
                     self.hitWall = True
             if headfor == Left:
@@ -102,12 +103,12 @@ class AFire(threading.Thread):
                 else:
                     self.hitWall = True
             time.sleep(0.2)
-            print(vars(self))
+            #print(vars(self))
 
 class Adder:
     def __init__(self,kind):
-        self.x    = random.randint(1,MaxScrX)
-        self.y    = random.randint(1,MaxScrX)
+        self.adderX    = random.randint(1,MaxScrX)
+        self.adderY    = random.randint(1,MaxScrX)
         self.kind = kind
 
 class scrControl:
@@ -115,7 +116,8 @@ class scrControl:
         self.scr = []
         self.initscr(MaxScrX,MaxScrY)
         self.lastscr = cp(self.scr)
-    
+        self.colordict = dict()
+        
     def initscr(self,x,y):
         self.x = x
         self.y = y
@@ -124,23 +126,36 @@ class scrControl:
             for j in range(x):
                 self.scr[i].append(' ')
             
-    def update(self,x,y,ch):
+    def update(self,x,y,ch,color=WHITE):
         for i,j in zip(list(ch),range(len(ch))):
-            if x+j < self.x and y < self.y:
+            if x+j+1 < self.x and y+1 < self.y:
                 self.scr[y][x+j] = i
+                self.colordict[(y,x+j)] = color
     
     def show(self):
         for i in range(self.y):
             for j in range(self.x):
                 print("\033[%d;%dH%s" %(i+1,j+1,self.scr[i][j]))
-   
+    
     def updateShow(self):
         for i in range(self.y):
             for j in range(self.x):
                 if self.scr[i][j] != self.lastscr[i][j]:
+                    print(self.colordict[i,j])
                     print("\033[%d;%dH%s" %(i+1,j+1,self.scr[i][j]))
+                    print("\033[0m")
         self.lastscr = cp(self.scr)
-   
+
+class KeyboardListen(threading.Thread):
+    def __init__(self,fun):
+        super().__init__(self)
+        
+        self.ch   = False
+        self.fun  = fun
+    def run(self):
+        while True:
+            self.ch = self.fun(1)
+        
 if Test:
     p = player(0,0)
     print(vars(p))
