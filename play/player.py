@@ -81,7 +81,9 @@ class AFire(threading.Thread):
         
     def run(self):
         headfor = self.headfor
-        while not self.hitWall and not self.stop:
+        while not self.hitWall:
+            if self.stop:break;
+            
             if headfor == Right:
                 if self.fireX < MaxScrX:
                     self.fireX += 1

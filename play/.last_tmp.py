@@ -8,11 +8,16 @@ from myDict import *
 sumL = 1
 
 showXY = 0
-showHXY = 1
+showFireNumber = 0
+decreaseHealth = 1
+
 while True:
     ch = get.ch
     get.ch = 0
     
+    if not per.isAlive and decreaseHealth: 
+        print("\033[5;5Hyou died...")
+        break;
     #--getch----------------------------------------------
     if ch == UP:
         per.walk(Up)
@@ -26,7 +31,6 @@ while True:
         fireL.append(AFire(per.playerX,per.playerY,per.headfor))
         fireL[-1].start()
         time.sleep(0.1)
-        #fireL[-1].join()
     elif ch == DEBUG:
         time.sleep(1)
         debugMode = True
@@ -52,7 +56,9 @@ while True:
     #--fire----------------------------------------------
     for i in fireL:
         if i.hitWall or i.stop:
-            del i
+            del fireL[fireL.index(i)]
+            if showFireNumber:
+                print("\033[1;0H",len(fireL))
             continue
         if i.headfor == Right:
             firech = ">"
@@ -82,7 +88,7 @@ while True:
             edict.append(i)
         elif j[0] == AFIRE:
             fdict.append(i)
-        
+    
     for i in edict:
         for j in pdict:
             if i == j:
@@ -95,7 +101,8 @@ while True:
         for j in pdict:
             if i == j:
                 per.healthChange(-2)
-    
+                fireL[fdict.index(i)].stop = True
+                
     #--updateScr-----------------------------------------
     for i,j in zip(alldict.keys(),alldict.values()):
         if j[0] == PLAYER:
@@ -119,9 +126,10 @@ while True:
     edict = list()
     
     #--show message----------------------------------------------
-    print("\033[15;5H","level:{} HP:{} exp:{}".format(per.level,per.health,per.exp))
+    print("\033[15;5H","level:%5d HP:%5d exp:%5d" %(per.level,per.health,per.exp))
     if showXY:
         print("\033[15;30H","X:{} Y:{}".format(per.playerX,per.playerY))
     time.sleep(0.02)
 
 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+exit()

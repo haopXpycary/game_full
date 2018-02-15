@@ -28,14 +28,14 @@ scr.show()
 #玩家初始化
 per = player(0,0)
 
-#adder初始化
+#tool初始化
 adderL  = []
+fireL = []
 for i in range(MaxHealthAdder):
     adderL.append(Adder(healthAdder))
 for i in range(MaxExpAdder):
     adderL.append(Adder(expAdder))
 
-fireL = []
 alldict = dict() 
 pdict   = list() #player
 fdict   = list() #fire
