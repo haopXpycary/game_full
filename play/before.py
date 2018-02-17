@@ -3,6 +3,7 @@ import os
 import termios
 import tty
 
+from time import sleep
 from player import *
 from Const_H__ import *
 from myDict import *
@@ -31,13 +32,20 @@ per = player(0,0)
 #tool初始化
 adderL  = []
 fireL = []
+#
 for i in range(MaxHealthAdder):
     adderL.append(Adder(healthAdder))
+    sleep(0.01)
 for i in range(MaxExpAdder):
     adderL.append(Adder(expAdder))
+    sleep(0.01)
+for i in range(MaxMoneyAdder):
+    adderL.append(Adder(moneyAdder))
+    sleep(0.01)
 
 alldict = dict() 
 pdict   = list() #player
 fdict   = list() #fire
 hdict   = list() #healthAdder
 edict   = list() #expAdder
+mdict   = list() #moneyAdder

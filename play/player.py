@@ -6,7 +6,8 @@ import time
 
 from Const_H__ import *
 from tools import *
-
+from playMode import *
+	
 cp = copy.deepcopy
 Test = 0
 
@@ -24,7 +25,7 @@ class player:
         
         self.exp       = 0
         self.level     = 1
-    
+        self.money     = 100
     def move(self,x,y):
         self.playerX   = x
         self.playerY   = y
@@ -70,12 +71,13 @@ class player:
 
 
 class AFire(threading.Thread):
-    def __init__(self,x,y,headfor):
+    def __init__(self,x,y,headfor,hitHealth=3):
         super().__init__(self)
         
         self.fireX   = x
         self.fireY   = y
         self.headfor = headfor
+        self.hitHealth = hitHealth
         self.hitWall = False
         self.stop    = False
         
@@ -126,7 +128,7 @@ class scrControl:
         for i in range(y):
             self.scr.append([])
             for j in range(x):
-                self.scr[i].append(' ')
+                self.scr[i].append(FULLSCRCHAR)
             
     def update(self,x,y,ch,color=WHITE):
         for i,j in zip(list(ch),range(len(ch))):

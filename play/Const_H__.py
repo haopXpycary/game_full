@@ -1,3 +1,5 @@
+from playMode import *
+	
 #--headfor----------------------------------------------
 Right = 1
 Left = 2
@@ -11,11 +13,17 @@ UP    = "2"
 DOWN  = "8"
 FIRE  = "5"
 DEBUG = "+"
+ADDEXP = "@"
 
-MaxScrX = 31
+MaxScrX = 41
 MaxScrY = 15
-MaxHealthAdder = 1
-MaxExpAdder    = 1
+FULLSCRCHAR = " "
+if hideScr:
+    FULLSCRCHAR = "#"
+
+MaxHealthAdder = 2
+MaxExpAdder    = 2
+MaxMoneyAdder  = 3
 
 debugMode = 0
 
@@ -27,6 +35,7 @@ levelAdd = 1.5
 #--adderKind----------------------------------------------
 healthAdder = 1
 expAdder    = 2
+moneyAdder  = 3
 
 #--color----------------------------------------------
 BLACK     = "\033[30m"
@@ -42,4 +51,5 @@ WHITE     = "\033[37m"
 PLAYER = "p"
 HEALTH = "h"
 EXP    = "e"
+MONEY  = "m"
 AFIRE  = "f"
