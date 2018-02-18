@@ -31,11 +31,16 @@ while True:
         fireL.append(AFire(per.playerX,per.playerY,per.headfor,per.hitHealth))
         fireL[-1].start()
         time.sleep(0.1)
+    elif ch == TP:
+        if per.magic > 20:
+            for i in range(6):
+                per.walk(per.headfor)
+            per.magic -= 20
     elif ch == DEBUG:
         time.sleep(1)
         debugMode = True
     elif ch == ADDEXP:
-        per.addExp(10**10)
+        per.addExp(1000)
         
     #--make adder----------------------------------------------
     for i in adderL:
@@ -106,7 +111,7 @@ while True:
     for i in hdict:
         for j in pdict:
             if i == j:
-                per.healthChange(10)
+                per.healthChange(20)
                 del adderL[adderL.index([x for x in adderL if x.kind == healthAdder][hdict.index(i)])]
                 adderL.append(Adder(healthAdder))
     for i in fdict:
@@ -121,6 +126,14 @@ while True:
                 del adderL[adderL.index([x for x in adderL if x.kind == moneyAdder][mdict.index(i)])]
                 adderL.append(Adder(moneyAdder))
                 
+    #--add---
+    if per.magic < per.maxMagic and sumL % 3==0:
+        per.magic+=1
+    if per.health < per.maxHealth and sumL % 10==0:
+        per.health+=1
+    if magicFull:
+        per.magic = per.maxMagic
+        
     #--updateScr-----------------------------------------
     for i,j in zip(alldict.keys(),alldict.values()):
         if j[0] == PLAYER:
@@ -148,8 +161,8 @@ while True:
     mdict = list()
     
     #--show message----------------------------------------------
-    print("\033[15;5H","level:%5d HP:%5d exp:%5d" %(per.level,per.health,per.exp))
-    print("\033[1;33H","$%d" %per.money)
+    print("\033[15H","level:%5d HP:%5d MP:%5d exp:%5d" %(per.level,per.health,per.magic,per.exp))
+    print("\033[1;35H","$%d" %per.money)
     if showXY:
         print("\033[15;30H","X:{} Y:{}".format(per.playerX,per.playerY))
     time.sleep(0.02)

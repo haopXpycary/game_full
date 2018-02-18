@@ -6,3 +6,5 @@ hideScr    = 0
 randFire   = 1
 #玩家死亡
 playerDeath = 0
+#无限火力
+magicFull = 0

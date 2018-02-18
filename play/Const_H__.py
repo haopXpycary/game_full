@@ -12,6 +12,7 @@ LEFT  = "4"
 UP    = "2"
 DOWN  = "8"
 FIRE  = "5"
+TP    = "3"
 DEBUG = "+"
 ADDEXP = "@"
 
@@ -27,8 +28,8 @@ MaxMoneyAdder  = 3
 
 debugMode = 0
 
-def levelUp(n):
-    return 2*n**n
+levelUp = lambda n:n**2
+
 #最少150%
 levelAdd = 1.5
 

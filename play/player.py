@@ -26,6 +26,9 @@ class player:
         self.exp       = 0
         self.level     = 1
         self.money     = 100
+        
+        self.magic     = 100
+        self.maxMagic  = 100
     def move(self,x,y):
         self.playerX   = x
         self.playerY   = y
@@ -62,13 +65,13 @@ class player:
             
     def addExp(self,exp):
         self.exp += exp
-        while self.exp >= levelUp(self.level):
+        if self.exp >= levelUp(self.level):
+            self.exp = 0
             self.level += 1
-            self.health = fofi(levelAdd*self.health)
             self.maxHealth = fofi(levelAdd*self.maxHealth)
             self.protect = fofi(levelAdd*self.protect)
             self.hitHealth = fofi(levelAdd*self.hitHealth)
-
+            self.maxMagic = fofi(levelAdd*self.maxMagic)
 
 class AFire(threading.Thread):
     def __init__(self,x,y,headfor,hitHealth=3):
