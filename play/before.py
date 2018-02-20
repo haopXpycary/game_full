@@ -43,6 +43,17 @@ for i in range(MaxMoneyAdder):
     adderL.append(Adder(moneyAdder))
     sleep(0.01)
 
+if twoPlayer:
+    from communicateD import *
+    	
+    print("\033[1H等待玩家接入…")
+    sl = socketListen()
+    #print("\033[2H",sl.address,"\b:\b",sl.port)
+    #sl.send("hello")
+    #sleep(20)
+    sl.start()
+    os.system("clear")
+    
 alldict = dict() 
 pdict   = list() #player
 fdict   = list() #fire

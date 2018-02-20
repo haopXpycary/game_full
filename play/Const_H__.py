@@ -13,8 +13,10 @@ UP    = "2"
 DOWN  = "8"
 FIRE  = "5"
 TP    = "3"
-DEBUG = "+"
-ADDEXP = "@"
+WJQF  = "+"
+QPZD  = "-"
+DEBUG = ":"
+ADDEXP = "'"
 
 MaxScrX = 41
 MaxScrY = 15

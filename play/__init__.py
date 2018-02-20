@@ -5,7 +5,7 @@ from player import *
 from Const_H__ import *
 from myDict import *
 from playMode import *
-	
+
 sumL = 1
 
 showXY = 0
@@ -32,10 +32,39 @@ while True:
         fireL[-1].start()
         time.sleep(0.1)
     elif ch == TP:
-        if per.magic > 20:
+        per.tp()
+    elif ch == WJQF:
+        if per.decMp(20):
             for i in range(6):
-                per.walk(per.headfor)
-            per.magic -= 20
+                if per.headfor == Left:
+                    a,b = i,i
+                    c,d = i,-i
+                if per.headfor == Right:
+                    a,b = -i,i
+                    c,d = -i,-i
+                if per.headfor == Up:
+                    a,b = i,-i
+                    c,d = -i,-i
+                if per.headfor == Down:
+                    a,b = i,i
+                    c,d = -i,i
+                
+                fireL.append(AFire(per.playerX+a,per.playerY+b,per.headfor,per.hitHealth))
+                fireL[-1].start()
+                fireL.append(AFire(per.playerX+c,per.playerY+d,per.headfor,per.hitHealth))
+                fireL[-1].start()
+    
+    elif ch == QPZD:
+        if per.decMp(50):
+            for i in range(MaxScrX):
+                if i % 2 == 0:
+                    fireL.append(AFire(i,0,Down,per.hitHealth))
+                    fireL[-1].start()
+                    fireL.append(AFire(i,2,Down,per.hitHealth))
+                    fireL[-1].start()
+                fireL.append(AFire(i,1,Down,per.hitHealth))
+                fireL[-1].start()
+               
     elif ch == DEBUG:
         time.sleep(1)
         debugMode = True
@@ -51,18 +80,7 @@ while True:
         if i.kind == moneyAdder:
             alldict[(i.adderX,i.adderY)] = MONEY+"$"
         
-    #--player headfor----------------------------------------------
-    if per.headfor == Right:
-        perch = ">"
-    elif per.headfor == Left:
-        perch = "<"
-    elif per.headfor == Up:
-        perch = "^"
-    elif per.headfor == Down:
-        perch = "v"
-    if hidePlayer:
-        perch = FULLSCRCHAR
-    alldict[(per.playerX,per.playerY)] = PLAYER+perch
+    alldict[(per.playerX,per.playerY)] = PLAYER+per.perch
     
     #--fire----------------------------------------------
     for i in fireL:
@@ -71,15 +89,7 @@ while True:
             if showFireNumber:
                 print("\033[1;0H",len(fireL))
             continue
-        if i.headfor == Right:
-            firech = ">"
-        elif i.headfor == Left:
-            firech = "<"
-        elif i.headfor == Up:
-            firech = "^"
-        elif i.headfor == Down:
-            firech = "v"
-        alldict[(i.fireX,i.fireY)] = AFIRE+firech
+        alldict[(i.fireX,i.fireY)] = AFIRE+i.firech
     
     #--fire randomly----------------------------------------------
     sumL+=1
@@ -126,10 +136,11 @@ while True:
                 del adderL[adderL.index([x for x in adderL if x.kind == moneyAdder][mdict.index(i)])]
                 adderL.append(Adder(moneyAdder))
                 
+        
     #--add---
     if per.magic < per.maxMagic and sumL % 3==0:
         per.magic+=1
-    if per.health < per.maxHealth and sumL % 10==0:
+    if per.health < per.maxHealth and sumL % 10==0 and playerWell:
         per.health+=1
     if magicFull:
         per.magic = per.maxMagic
@@ -147,7 +158,17 @@ while True:
             continue
         scr.update(i[0],i[1],j[1:])
     scr.updateShow()
-    
+            
+    #--twoPlayerMode---
+    if twoPlayer:
+        send = ""
+        st = scr.scr
+        for i in range(len(st)):
+            for j in st[i]:
+                send += j
+            send += "\n"
+        sl.rt = send
+        
     #--back----------------------------------------------
     for i,j in zip(alldict.keys(),alldict.values()):
         scr.update(i[0],i[1],FULLSCRCHAR*(len(j)-1))
@@ -164,7 +185,7 @@ while True:
     print("\033[15H","level:%5d HP:%5d MP:%5d exp:%5d" %(per.level,per.health,per.magic,per.exp))
     print("\033[1;35H","$%d" %per.money)
     if showXY:
-        print("\033[15;30H","X:{} Y:{}".format(per.playerX,per.playerY))
+        print("\033[14;30H","X:{} Y:{}".format(per.playerX,per.playerY))
     time.sleep(0.02)
 
 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)

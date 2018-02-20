@@ -29,6 +29,9 @@ class player:
         
         self.magic     = 100
         self.maxMagic  = 100
+        
+        self.perch = ">"
+        
     def move(self,x,y):
         self.playerX   = x
         self.playerY   = y
@@ -38,17 +41,32 @@ class player:
             if headfor == Right:
                 if self.playerX < MaxScrX:
                     self.playerX += 1
+            
             if headfor == Left:
                 if self.playerX > 0:
                     self.playerX -= 1
+         
             if headfor == Down:
                 if self.playerY < MaxScrY:
                     self.playerY += 1
+         
             if headfor == Up:
                 if self.playerY > 0:
                     self.playerY -= 1
+        
         else:
             self.headfor = headfor
+        
+        if self.headfor == Right:
+            self.perch = ">"
+        elif self.headfor == Left:
+            self.perch = "<"
+        elif self.headfor == Up:
+            self.perch = "^"
+        elif self.headfor == Down:
+            self.perch = "v"
+        if hidePlayer:
+            self.perch = FULLSCRCHAR
         
     def healthChange(self,health):
         if health < 0:
@@ -72,18 +90,45 @@ class player:
             self.protect = fofi(levelAdd*self.protect)
             self.hitHealth = fofi(levelAdd*self.hitHealth)
             self.maxMagic = fofi(levelAdd*self.maxMagic)
-
+    
+    def decMp(self,mp):
+        if self.magic >= mp:
+            self.magic -= mp
+            return True
+        else:
+            return False
+    
+    def tp(self):
+        if self.decMp(20):
+            for i in range(6):
+                self.walk(self.headfor)
+            
 class AFire(threading.Thread):
     def __init__(self,x,y,headfor,hitHealth=3):
         super().__init__(self)
         
-        self.fireX   = x
-        self.fireY   = y
+        if 0 <= x <= MaxScrX:
+            self.fireX   = x
+        else:
+            self.fireX = 0
+        if 0 <= y <= MaxScrY:
+            self.fireY   = y
+        else:
+            self.fireY = 0
         self.headfor = headfor
         self.hitHealth = hitHealth
         self.hitWall = False
         self.stop    = False
         
+        if self.headfor == Right:
+            self.firech = ">"
+        elif self.headfor == Left:
+            self.firech = "<"
+        elif self.headfor == Up:
+            self.firech = "^"
+        elif self.headfor == Down:
+            self.firech = "v"
+            
     def run(self):
         headfor = self.headfor
         while not self.hitWall:
@@ -94,21 +139,23 @@ class AFire(threading.Thread):
                     self.fireX += 1
                 else:
                     self.hitWall = True
-            if headfor == Left:
+            elif headfor == Left:
                 if self.fireX > 0:
                     self.fireX -= 1
                 else:
                     self.hitWall = True
-            if headfor == Down:
+            elif headfor == Down:
                 if self.fireY < MaxScrY:
                     self.fireY += 1
                 else:
                     self.hitWall = True
-            if headfor == Up:
+            elif headfor == Up:
                 if self.fireY > 0:
                     self.fireY -= 1
                 else:
                     self.hitWall = True
+            
+            
             time.sleep(0.2)
             #print(vars(self))
 
@@ -148,7 +195,10 @@ class scrControl:
         for i in range(self.y):
             for j in range(self.x):
                 if self.scr[i][j] != self.lastscr[i][j]:
-                    print(self.colordict[i,j])
+                    try:
+                        print(self.colordict[i,j])
+                    except:
+                        print(WHITE)
                     print("\033[%d;%dH%s" %(i+1,j+1,self.scr[i][j]))
                     print("\033[0m")
         self.lastscr = cp(self.scr)
