@@ -12,3 +12,8 @@ def pvars(*argc,**argv):
             print(cls.__name__)
             print(vars(cls(*argc,**argv)))
     return pvar
+
+def skills(filename):
+    f = open(__file__[:__file__.rfind("/")]+"/Skill/"+filename+".py","r")
+    exec(compile("".join(f.readlines()),"","exec"))
+#skills("WJQF")

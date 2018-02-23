@@ -120,6 +120,7 @@ class AFire(threading.Thread):
         self.hitWall = False
         self.stop    = False
         
+        self.firech = ">"
         if self.headfor == Right:
             self.firech = ">"
         elif self.headfor == Left:
@@ -131,6 +132,8 @@ class AFire(threading.Thread):
             
     def run(self):
         headfor = self.headfor
+        if fireFast: SPEED = 0.02
+        else:        SPEED = 0.2
         while not self.hitWall:
             if self.stop:break;
             
@@ -156,7 +159,7 @@ class AFire(threading.Thread):
                     self.hitWall = True
             
             
-            time.sleep(0.2)
+            time.sleep(SPEED)
             #print(vars(self))
 
 class Adder:

@@ -13,8 +13,11 @@ class socketListen(threading.Thread):
         try:
             self.serversocket.bind((self.address,self.port))
         except:
-            print("Sorry.May be you have to connect the next.")
-            self.serversocket.bind((self.address,self.port+1))
+            try:
+                print("Sorry.May be you have to connect the next.")
+                self.serversocket.bind((self.address,self.port+1))
+            except:
+                print("No Post to open.")
         self.serversocket.listen(5)
         self.sock,self.addr = self.serversocket.accept()      
         self.ch = 0
@@ -23,16 +26,16 @@ class socketListen(threading.Thread):
         
     def run(self):
         while 1:
-            print(self.ch)
+            #print(self.ch)
             try:
                 self.ch = self.sock.recv(4096).decode()
             except:
                 self.sock,self.addr = self.serversocket.accept()      
-            sleep(0.2)
 
             if self.CONNECT and self.rt:
                 try:
-                    self.sock.send(self.rt.encode())
+                    self.sock.send(self.rt."""""")
+                    sleep(0.02)
                     self.rt = ""
                     self.sock.close()
                 finally:
