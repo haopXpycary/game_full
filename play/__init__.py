@@ -1,6 +1,7 @@
 import time
 
 from random import randint
+from sys import __stdin__,__stdout__
 from before import *
 from tools import *
 from player import *
@@ -13,6 +14,7 @@ def skills(filename):
     exec(compile("".join(f.readlines()),"","exec"))
 
 sumL = 1
+begin = time.time()
 
 showXY = 0
 showFireNumber = 0
@@ -55,7 +57,8 @@ while True:
         
     #--randwalk---
     
-    if sumL % 7 == 0:pass
+    if sumL % 10 == 0:
+        per2.addExp(1)
     swi = randint(1,4)
     for i in range(randint(1,3)):        
         per2.walk(swi)
@@ -181,7 +184,21 @@ while True:
     print("\033[1;35H","$%d" %per.money)
     if showXY:
         print("\033[14;30H","X:{} Y:{}".format(per.playerX,per.playerY))
+    now = time.time()-begin
+    print("\033[2;35H%2.2f" %now)
     time.sleep(0.02)
 
 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+__stdin__.flush()
+__stdout__.flush()
+print("EXHAUST")
+
+name = ""
+while get.ch != " ":
+    if get.ch:
+        name += get.ch
+        get.ch = 0
+writeScore(name,now,per.level,per.money)
+
+get.stop = 1
 exit()

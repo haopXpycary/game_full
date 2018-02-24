@@ -13,4 +13,4 @@ twoPlayer   = 0
 #自动回血
 playerWell  = 0
 #快速子弹
-fireFast    = 1
+fireFast    = 0

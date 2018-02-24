@@ -1,4 +1,6 @@
 from Const_H__ import *
+from os import chdir
+
 #四舍五入
 def fofi(x):
     if x % 1 >= 0.5:
@@ -13,7 +15,7 @@ def pvars(*argc,**argv):
             print(vars(cls(*argc,**argv)))
     return pvar
 
-def skills(filename):
-    f = open(__file__[:__file__.rfind("/")]+"/Skill/"+filename+".py","r")
-    exec(compile("".join(f.readlines()),"","exec"))
-#skills("WJQF")
+def writeScore(name,sec,level,money):
+    chdir(__file__[:__file__.rfind("/")])
+    with open("MaxScore.txt","a") as fMaxScore:
+        fMaxScore.write("Name:%5s Sec:%5.2f level:%5d money:%5d\n" %(name,sec,level,money))

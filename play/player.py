@@ -212,8 +212,9 @@ class KeyboardListen(threading.Thread):
         
         self.ch   = False
         self.fun  = fun
+        self.stop = False
     def run(self):
-        while True:
+        while not self.stop:
             self.ch = self.fun(1)
         
 if Test:
