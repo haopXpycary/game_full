@@ -31,7 +31,7 @@ class player:
         self.maxMagic  = 100
         
         self.perch = ">"
-        
+        self.way = 0
     def move(self,x,y):
         self.playerX   = x
         self.playerY   = y
@@ -67,6 +67,7 @@ class player:
             self.perch = "v"
         if hidePlayer:
             self.perch = FULLSCRCHAR
+        self.way += 1
         
     def healthChange(self,health):
         if health < 0:

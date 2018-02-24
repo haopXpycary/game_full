@@ -28,7 +28,7 @@ scr.show()
 
 #玩家初始化
 per = player(0,0)
-per2 = player(3,3)
+per2 = player(20,20)
 #tool初始化
 adderL  = []
 fireL = []

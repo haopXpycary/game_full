@@ -18,7 +18,7 @@ QPZD  = "-"
 DEBUG = ":"
 ADDEXP = "'"
 
-MaxScrX = 36
+MaxScrX = 35
 MaxScrY = 15
 FULLSCRCHAR = " "
 if hideScr:

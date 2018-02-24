@@ -16,8 +16,8 @@ def skills(filename):
 sumL = 1
 begin = time.time()
 
-showXY = 0
-showFireNumber = 0
+showXY = 1
+showFireNumber = 1
 
 while True:
     ch = get.ch
@@ -65,7 +65,8 @@ while True:
         time.sleep(0.02)
     fireL.append(AFire(per2.playerX,per2.playerY,per2.headfor,per2.hitHealth))
     fireL[-1].start()
-    
+
+    if randint(1,150) == 1:skills("QPZD")
     #--make adder----------------------------------------------
     for i in adderL:
         if i.kind == healthAdder:
@@ -82,7 +83,7 @@ while True:
         if i.hitWall or i.stop:
             del fireL[fireL.index(i)]
             if showFireNumber:
-                print("\033[1;0H",len(fireL))
+                print("\033[3;35HF%5d:" %len(fireL))
             continue
         alldict[(i.fireX,i.fireY)] = AFIRE+i.firech
     
@@ -181,24 +182,21 @@ while True:
     
     #--show message---player-------------------------------------------
     print("\033[15H","level:%5d HP:%5d MP:%5d exp:%5d" %(per.level,per.health,per.magic,per.exp))
-    print("\033[1;35H","$%d" %per.money)
+    print("\033[1;35H","$%5d" %per.money)
     if showXY:
         print("\033[14;30H","X:{} Y:{}".format(per.playerX,per.playerY))
     now = time.time()-begin
-    print("\033[2;35H%2.2f" %now)
+    print("\033[2;35H%5.2f" %now)
     time.sleep(0.02)
 
 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 __stdin__.flush()
 __stdout__.flush()
-print("EXHAUST")
+print("打扫战场中，请摁两下回车…")
 
-name = ""
-while get.ch != " ":
-    if get.ch:
-        name += get.ch
-        get.ch = 0
-writeScore(name,now,per.level,per.money)
+scoreTime = time.strftime("%Y/%m/%d %H:%M:%S::")
+scoreTime += "%.2f" %(now%1)
+writeScore(scoreTime,now,per.level,per.way,per2.way)
 
 get.stop = 1
 exit()

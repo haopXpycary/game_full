@@ -1,9 +1,0 @@
-Name:      Sec: 1.58 level:    1 money:  100
-Name:      Sec: 3.38 level:    1 money:  100
-Name:      Sec: 5.15 level:    1 money:  100
-Name:      Sec: 1.86 level:    1 money:  100
-Name: 
-
-
-
- Sec: 9.72 level:    1 money:  100
