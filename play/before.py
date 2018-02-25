@@ -32,7 +32,7 @@ per2 = player(20,20)
 #tool初始化
 adderL  = []
 fireL = []
-#
+#adder添加
 for i in range(MaxHealthAdder):
     adderL.append(Adder(healthAdder))
     sleep(0.01)
@@ -43,6 +43,7 @@ for i in range(MaxMoneyAdder):
     adderL.append(Adder(moneyAdder))
     sleep(0.01)
 
+#玩家接入
 if twoPlayer:
     from communicateD import *
     	
@@ -54,6 +55,7 @@ if twoPlayer:
     sl.start()
     os.system("clear")
     
+#初始化
 alldict = dict() 
 pdict   = list() #player
 fdict   = list() #fire

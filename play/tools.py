@@ -16,8 +16,8 @@ def pvars(*argc,**argv):
     return pvar
 
 def writeScore(s_time,sec,level,way,e_way):
-    chdir(__file__[:__file__.rfind("/")])
+    chdir(__file__[:__file__.rfind("/")]+"/Info")
     with open("MaxScore.txt","a") as fMaxScore:
         fMaxScore.write("""
-+---------+---------+-------------+------------------------------+
-|Sec:%5.2f|Level:%3d|Way:%4d:%-4d|Time:%s|"""%(sec,level,way,e_way,s_time))
++----------+---------+-------------+------------------------------+
+|Sec:%6.2f|Level:%3d|Way:%4d:%-4d|Time:%s|"""%(sec,level,way,e_way,s_time))

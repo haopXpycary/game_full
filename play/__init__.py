@@ -16,8 +16,14 @@ def skills(filename):
 sumL = 1
 begin = time.time()
 
+#显示坐标
 showXY = 1
+#显示屏幕中子弹数量
 showFireNumber = 1
+#显示实体伤害
+showHit = 1
+#显示技能伤害
+showPlayerHit = 1
 
 while True:
     ch = get.ch
@@ -63,8 +69,9 @@ while True:
     for i in range(randint(1,3)):        
         per2.walk(swi)
         time.sleep(0.02)
-    fireL.append(AFire(per2.playerX,per2.playerY,per2.headfor,per2.hitHealth))
-    fireL[-1].start()
+    if sumL % 2 == 0:
+        fireL.append(AFire(per2.playerX,per2.playerY,per2.headfor,per2.hitHealth))
+        fireL[-1].start()
 
     if randint(1,150) == 1:skills("QPZD")
     #--make adder----------------------------------------------
@@ -89,7 +96,7 @@ while True:
     
     #--fire randomly----------------------------------------------
     sumL+=1
-    if sumL % 1 == 0 and randFire:
+    if sumL % 2 == 0 and randFire:
         fireL.append(AFire(random.randint(1,MaxScrX),
         	                  random.randint(1,MaxScrY),
         	                  random.randint(1,4)))
@@ -187,7 +194,11 @@ while True:
         print("\033[14;30H","X:{} Y:{}".format(per.playerX,per.playerY))
     now = time.time()-begin
     print("\033[2;35H%5.2f" %now)
-    time.sleep(0.02)
+    if showHit:
+        print("\033[4;35H%5dA" %(per2.hitHealth-per.protect))
+    if showPlayerHit:
+        print("\033[5;35H%5dH" %(per.hitHealth-per.protect))
+    time.sleep(0.01)
 
 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 __stdin__.flush()
@@ -196,7 +207,8 @@ print("打扫战场中，请摁两下回车…")
 
 scoreTime = time.strftime("%Y/%m/%d %H:%M:%S::")
 scoreTime += "%.2f" %(now%1)
-writeScore(scoreTime,now,per.level,per.way,per2.way)
+if now >= 20:
+    writeScore(scoreTime,now,per.level,per.way,per2.way)
 
 get.stop = 1
 exit()
